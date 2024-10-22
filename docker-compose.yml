@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+
+  loadtest:
+    build:
+      context: ./LoadTest
+      dockerfile: ./Dockerfile
+    depends_on:
+      - fastapi-app
+      - flask-app
+      - django-drf-app
+      - node-api
+    ports:
+      - "8011:8011"
+    networks:
+      - app-network
+
+  fastapi-app:
+    build:
+      context: ./fast-api
+      dockerfile: ./Dockerfile
+    ports:
+      - "8015:8015"
+    networks:
+      - app-network
+
+  flask-app:
+    build:
+      context: ./Flask-api
+      dockerfile: ./Dockerfile
+    ports:
+      - "8013:8013"
+    networks:
+      - app-network
+
+  django-drf-app:
+    build:
+      context: ./drf-api
+      dockerfile: ./Dockerfile
+    ports:
+      - "8014:8014"
+    networks:
+      - app-network
+
+  node-api:
+    build:
+      context: ./node-api
+      dockerfile: ./Dockerfile
+    ports:
+      - "8012:8012"
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
